@@ -9,7 +9,7 @@ A full description of the project, detailng a more in depth description can be f
 
 
 ## Compling
-The program can be compiled using the qmake command in the project directory. 
+The program can be compiled using the qmake command in the /FinalQtCameraCode project directory. 
 
 ```
 qmake
@@ -22,8 +22,12 @@ make
 ```  
 
 ## Running
-Once the project has been made, an executable file is generated allowing the program to be run. This can done by using the startx command in the target repository.
+Once the project has been made, an executable file is generated allowing the program to be run. This can done by using the startx command in the same directory.
 
 ```
 sudo startx ./Camera
 ```
+
+It can take a while to open the window so some patience is required.  
+
+Once the window opens, the image is displayed along with a knob which can be used to adjust the overall image brightness.
