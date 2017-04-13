@@ -6,10 +6,10 @@ The aim of this project was to create a very low resolution, black and white cam
 A full description of the project, detailng a more in depth description can be found in under the wiki tab of the project.
 
 ## Installation
-There are three c++ libraries that must be downloaded before this project can be compiled:  
+There are three C++ libraries that must be downloaded before this project can be compiled:  
 
-+ BCM2835 library which can be obtained from
-+ QT4
++ BCM2835 library which can be downloaded by folow the steps [here](http://www.airspayce.com/mikem/bcm2835/)
++ QT4 library which can be downloaded by folling [these](https://wiki.qt.io/Apt-get_Qt4_on_the_Raspberry_Pi) steps.
 + Qwt (QT widgets)
 
 ## Compling
