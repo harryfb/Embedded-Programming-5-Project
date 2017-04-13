@@ -5,7 +5,7 @@ The aim of this project was to create a very low resolution, black and white cam
 
 A full description of the project, detailng a more in depth description can be found in under the [wiki](https://github.com/harryfb/Photodiode-Camera/wiki) tab of the project.
 
-## Installation
+## Installation 
 There are three C++ libraries that must be downloaded before this project can be compiled:  
 
 + BCM2835 library which can be downloaded by following the steps [here](http://www.airspayce.com/mikem/bcm2835/)
