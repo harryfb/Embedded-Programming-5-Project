@@ -6,7 +6,11 @@ The aim of this project was to create a very low resolution, black and white cam
 A full description of the project, detailng a more in depth description can be found in under the wiki tab of the project.
 
 ## Installation
+There are three c++ libraries that must be downloaded before this project can be compiled:  
 
++BCM2835 library which can be obtained from
++QT4
++Qwt (QT widgets)
 
 ## Compling
 The program can be compiled using the qmake command in the /FinalQtCameraCode project directory. 
