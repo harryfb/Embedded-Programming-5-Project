@@ -8,7 +8,7 @@ A full description of the project, detailng a more in depth description can be f
 ## Installation
 
 
-## Compling and Running
+## Compling
 The program can be compiled using the qmake command in the project directory. 
 
 ```
@@ -19,4 +19,11 @@ If this runs correctly, a Makefile will be created in this location which can th
 
 ```
 make
+```  
+
+## Running
+Once the project has been made, an executable file is generated allowing the program to be run. This can done by using the startx command in the target repository.
+
+```
+sudo startx ./Camera
 ```
