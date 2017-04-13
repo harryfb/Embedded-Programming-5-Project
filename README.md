@@ -8,8 +8,8 @@ A full description of the project, detailng a more in depth description can be f
 ## Installation
 There are three C++ libraries that must be downloaded before this project can be compiled:  
 
-+ BCM2835 library which can be downloaded by folow the steps [here](http://www.airspayce.com/mikem/bcm2835/)
-+ QT4 library which can be downloaded by folling [these](https://wiki.qt.io/Apt-get_Qt4_on_the_Raspberry_Pi) steps.
++ BCM2835 library which can be downloaded by following the steps [here](http://www.airspayce.com/mikem/bcm2835/)
++ QT4 library which can be downloaded by following the steps [here](https://wiki.qt.io/Apt-get_Qt4_on_the_Raspberry_Pi).
 + [Qwt](http://qwt.sourceforge.net/index.html#downloads) (QT widgets) 
 
 ## Compling
