@@ -7,3 +7,12 @@ A full description of the project, detailng a more in depth description can be f
 
 ## Installation
 
+
+## Compling and Running
+The program can be compiled using the qmake command in the project directory. 
+
+'''
+qmake
+'''
+
+If this runs correctly, a Makefile will be created in this location.
