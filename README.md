@@ -10,7 +10,7 @@ There are three C++ libraries that must be downloaded before this project can be
 
 + BCM2835 library which can be downloaded by folow the steps [here](http://www.airspayce.com/mikem/bcm2835/)
 + QT4 library which can be downloaded by folling [these](https://wiki.qt.io/Apt-get_Qt4_on_the_Raspberry_Pi) steps.
-+ Qwt (QT widgets)
++ [Qwt](http://qwt.sourceforge.net/index.html#downloads) (QT widgets) 
 
 ## Compling
 The program can be compiled using the qmake command in the /FinalQtCameraCode project directory. 
