@@ -3,7 +3,7 @@
 ## Introduction
 The aim of this project was to create a very low resolution, black and white camera using an array of photodiodes. Their values are output in real time to a screen where the image is displayed. Here the brightness of the image can be adjusted depending on the scene.  
 
-A full description of the project, detailng a more in depth description can be found in under the wiki tab of the project.
+A full description of the project, detailng a more in depth description can be found in under the [wiki](https://github.com/harryfb/Photodiode-Camera/wiki) tab of the project.
 
 ## Installation
 There are three C++ libraries that must be downloaded before this project can be compiled:  
