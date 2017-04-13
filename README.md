@@ -13,6 +13,10 @@ The program can be compiled using the qmake command in the project directory.
 
 ```
 qmake
-```
+```   
 
-If this runs correctly, a Makefile will be created in this location.
+If this runs correctly, a Makefile will be created in this location which can then be built using the make command.
+
+```
+make
+```
