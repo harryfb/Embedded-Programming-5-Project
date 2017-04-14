@@ -15,27 +15,16 @@
 
 #include <QDebug>
 
-#define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
-
-#define MAX_SAMPLES 65536
-
 uint16_t ADCValue[5][6] = {0};
 
-
+//ADCReader Constructor
 ADCreader::ADCreader()
 {
     static const char *device = "/dev/spidev0.0";
     mode = SPI_CPHA | SPI_CPOL;;
     bits = 8;
     drdy_GPIO = 22;
-
-    // set up ringbuffer
-    samples = new int[MAX_SAMPLES];
-    // pointer for incoming data
-    pIn = samples;
-    // pointer for outgoing data
-    pOut = samples;
-
+    //Multiplexer Select Lines
     s1 = 2;
     s2 = 3;
     s3 = 17;
@@ -44,22 +33,6 @@ ADCreader::ADCreader()
 
 
     int ret = 0;
-
-    /*s1_fd;
-    s2_fd;
-    s3_fd;
-    s4_fd;
-    s5_fd;*/
-
-//    int no_tty = !isatty( fileno(stdout) );
-
-    //int col;
-    //int row;
-    //int sel_num = 0;
-
-    //int t = 0;
-
-    //uint16_t value[5][6];
 
     fd = open(device, O_RDWR);
     if (fd < 0)
@@ -95,8 +68,7 @@ ADCreader::ADCreader()
     // this also inits the general purpose IO
     gz_clock_ena(GZ_CLK_5MHz,5);
 
-    // enables sysfs entry for the GPIO pin
-
+    // enables sysfs entry for the GPIO pin and Multiplexer Select Lines
     gpio_export(drdy_GPIO);
     gpio_export(s1);
     gpio_export(s2);
@@ -115,7 +87,7 @@ ADCreader::ADCreader()
     // set interrupt detection to falling edge
     gpio_set_edge(drdy_GPIO,"falling");
 
-    // get a file descriptor for the GPIO pin
+    // get a file descriptor for the GPIO pin and MUX Select Lines
     sysfs_fd = gpio_fd_open(drdy_GPIO);
     s1_fd = gpio_fd_open(s1);
     s2_fd = gpio_fd_open(s2);
@@ -228,7 +200,7 @@ int ADCreader::readData(int fd)
     return (rx1[0]<<8)|(rx1[1]);
 }
 
-
+//This function selects the correct multiplexer lines for the next pixel to be read into the ADC
 void ADCreader::mux(int sel)
 {
 
@@ -247,8 +219,7 @@ void ADCreader::mux(int sel)
     gpio_set_value(s5,a4);
 }
 
-
-
+//The ADCReader Thread started by adcreader->start(); in the window.cpp file
 void ADCreader::run()
 {
     running = true;
@@ -263,10 +234,9 @@ void ADCreader::run()
 	int ret;
 
         for (sel_num = 0; sel_num < 30; sel_num++) {
-                  mux(sel_num);
-		  msleep(10);
-		  //for (t = 0; t < 10000000; t++){
-		  //}
+                  mux(sel_num); //Select the correct pixel
+		  msleep(10); //wait 10ms
+
                   // let's wait for data for max one second
                   ret = gpio_poll(sysfs_fd,1000);
                   if (ret<1) {
@@ -276,38 +246,25 @@ void ADCreader::run()
                   // tell the AD7705 to read the data register (16 bits)
                   writeReg(fd,0x38);
 
-              int col2 = col;
-	      int row2 = row;
+                  int col2 = col;
+	          int row2 = row;
 
                   // read the data register by performing two 8 bit reads
                   rawvalue[row2][col2] = readData(fd)-0x8000;
                   value[row2][col2] = (rawvalue[row2][col2] - 1000) / 50.78125;
 
-                  if (value[row2][col2] > 255) {
+                  if (value[row2][col2] > 255) { //Make sure the greyscale value cannot be greater than 255
                       value[row2][col2] = 255;
                   }
-
+		  //Store the sample from the ADC into the ADCValue Matrix
                   ADCValue[row2][col2] = value[row2][col2];
-
-
-		  /**pIn = value[row][col2];
-                  if (pIn == (&samples[MAX_SAMPLES-1]))
-                    pIn = samples;
-                  else
-                    pIn++;*/
 
               col++;
               if (col > 5) {
                 col = 0;
                 row++;
               }
-
-//              for (t = 0; t < 100000000; t++) {
-//              }
-
-
         }
-
     }
 
     close(fd);
@@ -319,27 +276,14 @@ void ADCreader::run()
     gpio_fd_close(s5_fd);
 
 }
-
+//Stop the ADCReader thread
 void ADCreader::quit()
 {
     running = false;
     exit(0);
 }
-
+//Get the ADC Sample for the pixel indicated by valueRow and valueCol
 int ADCreader::getSample(int valueRow, int valueCol)
 {
-  //assert(pOut!=pIn);
-  //int GetValue;
-  //GetValue = ADCValue[valueX][valueY];
-  /*if (pOut == (&samples[MAX_SAMPLES-1]))
-    pOut = samples;
-  else
-    pOut++;*/
   return ADCValue[valueRow][valueCol];
-}
-
-
-int ADCreader::hasSample()
-{
-  return (pOut!=pIn);
 }
