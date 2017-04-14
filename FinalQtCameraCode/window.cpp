@@ -1,57 +1,61 @@
 #include "window.h"
 #include "ui_window.h"
 #include "qwt/qwt_knob.h"
-
+//Declaration of the two dimensional array which holds the greyscale value samples read from the ADC  
     int Value[5][6];
+// Declaration of the current row and column variables
     int WindowRow = 0;
     int WindowCol = 0;
 
+//Main Window Constructor
 Window::Window(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Window)
 {
     ui->setupUi(this);
+    //Call the ADCReader Constructor
     adcreader = new ADCreader();
+    //Start the ADCReader run function in it's own thread
     adcreader->start();
 
+    //Create a new QWT Knob with a range between 255 and -255 and place it in the left corner
     knob = new QwtKnob(this);
     knob->setValue(offset);
     knob->setRange(-255, 255);
     knob->move(40, 50);
     knob->resize(150, 150);
-
+    //Connect the value changed signal to the setValue function
     connect(knob, SIGNAL(valueChanged(int)), SLOT(setValue(int)));
 
 }
 
-
+//Function which sets the new value of offset
 void Window::setValue(int value)
 {
     this->offset() = offset;
 }
-
 
 void Window::timerEvent( QTimerEvent * )
 {
 
 for(WindowRow = 0; WindowRow < 5; WindowRow++){
 	for(WindowCol = 0; WindowCol < 6; WindowCol++){
-            Value[WindowRow][WindowCol] = (adcreader->getSample(WindowRow, WindowCol));
-	    Value[WindowRow][WindowCol] += offset;
+            Value[WindowRow][WindowCol] = (adcreader->getSample(WindowRow, WindowCol));//Get a sample from the ADC and store it in the value array
+	    Value[WindowRow][WindowCol] += offset; //Add the offset from the knob value to the ADC sample
 
-	    if (Value[WindowRow][WindowCol] > 255) {
+	    if (Value[WindowRow][WindowCol] > 255) { //Sets the sample value at no greater than 255
 		Value[WindowRow][WindowCol] = 255;
 	    }
 
-	    if (Value[WindowRow][WindowCol] < 0) {
+	    if (Value[WindowRow][WindowCol] < 0) { //Sets the sample value at no less than 0
 		Value[WindowRow][WindowCol] = 0;
 	    }
 
 	}
 }
-    this->update();
+    this->update(); //Updates the paint event function
 }
-
+//Main Window Destructor
 Window::~Window()
 {
     delete ui;
@@ -59,7 +63,7 @@ Window::~Window()
     adcreader->wait();
     delete adcreader;
 }
-
+//Declare the paint event function
 void Window::paintEvent(QPaintEvent *event){
     QPainter painter(this);
 
@@ -70,7 +74,7 @@ void Window::paintEvent(QPaintEvent *event){
 
     int i1res = 120;
     int i2res = 120;
-
+    //Declare each  of the 30 pixel as one rectangle
     QRectF rectangle0(i,i2,i3,i4); //1st row 1st pixel
     i = i + i1res;
 
@@ -164,7 +168,7 @@ void Window::paintEvent(QPaintEvent *event){
 
     QRectF rectangle29(i,i2,i3,i4);
 
-
+	//Convert the greyscale value read for each sample to an RGB Value
         QRgb BrushColour0 = (Value[0][0] << 16) + (Value [0][0] << 8) + Value[0][0];
         QRgb BrushColour1 = (Value[0][1] << 16) + (Value [0][1] << 8) + Value[0][1];
         QRgb BrushColour2 = (Value[0][2] << 16) + (Value [0][2] << 8) + Value[0][2];
@@ -195,7 +199,7 @@ void Window::paintEvent(QPaintEvent *event){
         QRgb BrushColour27 = (Value[4][3] << 16) + (Value [4][3] << 8) + Value[4][3];
         QRgb BrushColour28 = (Value[4][4] << 16) + (Value [4][4] << 8) + Value[4][4];
         QRgb BrushColour29 = (Value[4][5] << 16) + (Value [4][5] << 8) + Value[4][5];
-
+        //Declare the brush for each pixel and store the RGB value with each brush
         QBrush brush0(BrushColour0,Qt::SolidPattern);
         QBrush brush1(BrushColour1,Qt::SolidPattern);
         QBrush brush2(BrushColour2,Qt::SolidPattern);
@@ -226,96 +230,37 @@ void Window::paintEvent(QPaintEvent *event){
         QBrush brush27(BrushColour27,Qt::SolidPattern);
         QBrush brush28(BrushColour28,Qt::SolidPattern);
         QBrush brush29(BrushColour29,Qt::SolidPattern);
-
+	//Paint each pixel in with the greyscale value sampled from the ADC
         painter.fillRect(rectangle0,brush0);
-        //painter.drawRect(rectangle0);
-
         painter.fillRect(rectangle1,brush1);
-        //painter.drawRect(rectangle1);
-
         painter.fillRect(rectangle2,brush2);
-        //painter.drawRect(rectangle2);
-
         painter.fillRect(rectangle3,brush3);
-        //painter.drawRect(rectangle3);
-
         painter.fillRect(rectangle4,brush4);
-        //painter.drawRect(rectangle4);
-
         painter.fillRect(rectangle5,brush5);
-        //painter.drawRect(rectangle5);
-
         painter.fillRect(rectangle6,brush6);
-        //painter.drawRect(rectangle6);
-
         painter.fillRect(rectangle7,brush7);
-        //painter.drawRect(rectangle7);
-
         painter.fillRect(rectangle8,brush8);
-        //painter.drawRect(rectangle8);
-
         painter.fillRect(rectangle9,brush9);
-        //painter.drawRect(rectangle9);
-
         painter.fillRect(rectangle10,brush10);
-        //painter.drawRect(rectangle10);
-
         painter.fillRect(rectangle11,brush11);
-        //painter.drawRect(rectangle11);
-
         painter.fillRect(rectangle12,brush12);
-        //painter.drawRect(rectangle12);
-
         painter.fillRect(rectangle13,brush13);
-        //painter.drawRect(rectangle13);
-
         painter.fillRect(rectangle14,brush14);
-        //painter.drawRect(rectangle14);
-
         painter.fillRect(rectangle15,brush15);
-        //painter.drawRect(rectangle15);
-
         painter.fillRect(rectangle16,brush16);
-        //painter.drawRect(rectangle16);
-
         painter.fillRect(rectangle17,brush17);
-        //painter.drawRect(rectangle17);
-
         painter.fillRect(rectangle18,brush18);
-        //painter.drawRect(rectangle18);
-
         painter.fillRect(rectangle19,brush19);
-        //painter.drawRect(rectangle19);
-
         painter.fillRect(rectangle20,brush20);
-        //painter.drawRect(rectangle20);
-
         painter.fillRect(rectangle21,brush21);
-        //painter.drawRect(rectangle21);
-
         painter.fillRect(rectangle22,brush22);
-        //painter.drawRect(rectangle22);
-
         painter.fillRect(rectangle23,brush23);
-        //painter.drawRect(rectangle23);
-
         painter.fillRect(rectangle24,brush24);
-        //painter.drawRect(rectangle24);
-
         painter.fillRect(rectangle25,brush25);
-        //painter.drawRect(rectangle25);
-
         painter.fillRect(rectangle26,brush26);
-        //painter.drawRect(rectangle26);
-
         painter.fillRect(rectangle27,brush27);
-        //painter.drawRect(rectangle27);
-
         painter.fillRect(rectangle28,brush28);
-        //painter.drawRect(rectangle28);
-
         painter.fillRect(rectangle29,brush29);
-        //painter.drawRect(rectangle29);
 }
 
 
