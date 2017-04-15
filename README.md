@@ -12,6 +12,11 @@ There are three C++ libraries that must be downloaded before this project can be
 + QT4 library which can be downloaded by following the steps [here](https://wiki.qt.io/Apt-get_Qt4_on_the_Raspberry_Pi).
 + [Qwt](http://qwt.sourceforge.net/index.html#downloads) (QT widgets) 
 
+This repository can be downloaded by using:
+```
+git clone https://github.com/harryfb/Photodiode-Camera.git
+```
+
 ## Compling
 The program can be compiled using the qmake command in the /FinalQtCameraCode project directory. 
 
