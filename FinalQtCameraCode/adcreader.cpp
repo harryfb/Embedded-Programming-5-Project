@@ -24,6 +24,7 @@ ADCreader::ADCreader()
     mode = SPI_CPHA | SPI_CPOL;;
     bits = 8;
     drdy_GPIO = 22;
+	
     //Multiplexer Select Lines
     s1 = 2;
     s2 = 3;
@@ -76,7 +77,7 @@ ADCreader::ADCreader()
     gpio_export(s4);
     gpio_export(s5);
 
-    // set to input
+    // set drdy to input & select pins to output
     gpio_set_dir(drdy_GPIO,0);
     gpio_set_dir(s1,1);
     gpio_set_dir(s2,1);
@@ -206,12 +207,14 @@ void ADCreader::mux(int sel)
 
     int a0, a1, a2, a3, a4;
 
+    //Split sel into 5 output bits
     a0 = sel & 0x01;
     a1 = (sel & 0x02) >> 1;
     a2 = (sel & 0x04) >> 2;
     a3 = (sel & 0x08) >> 3;
     a4 = (sel & 0x10) >> 4;
 
+    //Assign bit values to select pins
     gpio_set_value(s1,a0);
     gpio_set_value(s2,a1);
     gpio_set_value(s3,a2);
@@ -267,6 +270,7 @@ void ADCreader::run()
         }
     }
 
+    //Close gpio
     close(fd);
     gpio_fd_close(sysfs_fd);
     gpio_fd_close(s1_fd);
